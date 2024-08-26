@@ -45,8 +45,6 @@ export const App: React.FC = () => {
   const activeListLength = getFilteredList(Filter.active, todosList)?.length;
   const completedTodos = getFilteredList(Filter.completed, todosList);
 
-  const isAllTodosCompleted = completedTodos.length === todosList.length;
-
   function handleAddingTodo(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -130,7 +128,6 @@ export const App: React.FC = () => {
           todoList={todosList}
           isSubmiting={isSubmiting}
           isClearTitle={isClearTitle}
-          isAllTodosCompleted={isAllTodosCompleted}
           onSetIsClearTitle={setIsClearTitle}
           onHandleAddingTodo={handleAddingTodo}
           onHandleToggleAllTodos={handleToggleAllTodos}

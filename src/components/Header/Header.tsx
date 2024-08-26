@@ -5,7 +5,6 @@ type Props = {
   todoList: Todo[];
   isSubmiting: boolean;
   isClearTitle: boolean;
-  isAllTodosCompleted: boolean;
   onSetIsClearTitle: (needClear: boolean) => void;
   onHandleAddingTodo: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   onHandleToggleAllTodos: () => void;
@@ -15,7 +14,6 @@ export const Header: React.FC<Props> = ({
   todoList,
   isSubmiting,
   isClearTitle,
-  isAllTodosCompleted,
   onSetIsClearTitle,
   onHandleAddingTodo,
   onHandleToggleAllTodos,
@@ -39,6 +37,8 @@ export const Header: React.FC<Props> = ({
   const handleInputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
+
+  const isAllTodosCompleted = todoList.every(({ completed }) => completed);
 
   return (
     <header className="todoapp__header">
