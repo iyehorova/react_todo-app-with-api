@@ -6,7 +6,6 @@ type Props = {
   isSubmiting: boolean;
   isClearTitle: boolean;
   isAllTodosCompleted: boolean;
-  isTogglingAllTodos: boolean;
   onSetIsClearTitle: (needClear: boolean) => void;
   onHandleAddingTodo: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   onHandleToggleAllTodos: () => void;
@@ -17,7 +16,6 @@ export const Header: React.FC<Props> = ({
   isSubmiting,
   isClearTitle,
   isAllTodosCompleted,
-  isTogglingAllTodos,
   onSetIsClearTitle,
   onHandleAddingTodo,
   onHandleToggleAllTodos,
@@ -44,10 +42,12 @@ export const Header: React.FC<Props> = ({
 
   return (
     <header className="todoapp__header">
-      {!isTogglingAllTodos && todoList.length > 0 && (
+      {todoList.length > 0 && (
         <button
           type="button"
-          className={cn('todoapp__toggle-all', { active: isAllTodosCompleted })}
+          className={cn('todoapp__toggle-all', {
+            active: isAllTodosCompleted,
+          })}
           data-cy="ToggleAllButton"
           onClick={onHandleToggleAllTodos}
         />

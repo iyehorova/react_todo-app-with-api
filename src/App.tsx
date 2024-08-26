@@ -16,7 +16,6 @@ export const App: React.FC = () => {
   const [isSubmiting, setIsSubmiting] = useState(false);
   const [isClearTitle, setIsClearTitle] = useState(false);
   const [tempTodo, setTempTodo] = useState<Todo | null>(null);
-  const [isTogglingAllTodos, setIsTogglingAllTodos] = useState(false);
 
   const [error, setError] = useState<ErrorMessages | null>(null);
 
@@ -97,7 +96,6 @@ export const App: React.FC = () => {
   }
 
   function handleToggleAllTodos() {
-    setIsTogglingAllTodos(true);
     const activeTodos = todosList.filter(({ completed }) => !completed);
     const todoToReverseComplete =
       activeTodos.length > 0 ? activeTodos : todosList;
@@ -120,8 +118,7 @@ export const App: React.FC = () => {
 
         setTodosList(updatedTodoList);
       })
-      .catch(() => setError(errorMessages.update))
-      .finally(() => setIsTogglingAllTodos(false));
+      .catch(() => setError(errorMessages.update));
   }
 
   return (
@@ -134,7 +131,6 @@ export const App: React.FC = () => {
           isSubmiting={isSubmiting}
           isClearTitle={isClearTitle}
           isAllTodosCompleted={isAllTodosCompleted}
-          isTogglingAllTodos={isTogglingAllTodos}
           onSetIsClearTitle={setIsClearTitle}
           onHandleAddingTodo={handleAddingTodo}
           onHandleToggleAllTodos={handleToggleAllTodos}
