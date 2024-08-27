@@ -27,22 +27,12 @@ export const App: React.FC = () => {
       });
   }, []);
 
-  useEffect(() => {
-    let timerId = 0;
-
-    if (error) {
-      timerId = window.setTimeout(() => setError(null), 3000);
-    }
-
-    return () => clearTimeout(timerId);
-  }, [error]);
-
   function handleHideError() {
     setError(null);
   }
 
-  const filteredList = getFilteredList(filter, todosList);
-  const activeListLength = getFilteredList(Filter.active, todosList)?.length;
+  const filteredTodos = getFilteredList(filter, todosList);
+  const activeTodos = getFilteredList(Filter.active, todosList);
   const completedTodos = getFilteredList(Filter.completed, todosList);
 
   function handleAddingTodo(event: React.KeyboardEvent<HTMLInputElement>) {
@@ -94,7 +84,6 @@ export const App: React.FC = () => {
   }
 
   function handleToggleAllTodos() {
-    const activeTodos = todosList.filter(({ completed }) => !completed);
     const todoToReverseComplete =
       activeTodos.length > 0 ? activeTodos : todosList;
     const promiseMap = todoToReverseComplete.map(({ id, completed }) =>
@@ -106,12 +95,13 @@ export const App: React.FC = () => {
         let updatedTodoList: Todo[] = [];
 
         if (todoToReverseComplete.length === todosList.length) {
-          results.forEach(result => updatedTodoList.push(result));
+          updatedTodoList = results;
         } else {
-          updatedTodoList = todosList.map(todo => ({
-            ...todo,
-            completed: true,
-          }));
+          todosList.forEach(todo => {
+            const findUpdateTodo = results.find(({ id }) => todo.id === id);
+
+            updatedTodoList.push(findUpdateTodo || todo);
+          });
         }
 
         setTodosList(updatedTodoList);
@@ -134,7 +124,7 @@ export const App: React.FC = () => {
         />
 
         <section className="todoapp__main" data-cy="TodoList">
-          {filteredList?.map(todo => (
+          {filteredTodos?.map(todo => (
             <TodoItem
               todo={todo}
               key={todo.id}
@@ -155,7 +145,7 @@ export const App: React.FC = () => {
         {todosList.length > 0 && (
           <Footer
             currentFilter={filter}
-            activeListLength={activeListLength}
+            activeListLength={activeTodos.length}
             completedTodos={completedTodos}
             onSetFilter={setFilter}
             onSetError={setError}
